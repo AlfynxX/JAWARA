@@ -4,6 +4,11 @@ import Dashboard from './pages/Dashboard';
 import ReportPage from './pages/ReportPage';
 import FinancePage from './pages/FinancePage';
 import SocialAidPage from './pages/SocialAidPage';
+import LayananSuratPage from './pages/LayananSuratPage';
+import LapakDesaPage from './pages/LapakDesaPage';
+import PinjamBarangPage from './pages/PinjamBarangPage';
+import PosyanduPage from './pages/PosyanduPage';
+import BarangHilangPage from './pages/BarangHilangPage';
 import { useDarkMode } from './hooks/useDarkMode';
 
 export default function App() {
@@ -17,6 +22,11 @@ export default function App() {
                     <Route path="/report" element={<ReportPage isDark={isDark} toggleDark={toggle} />} />
                     <Route path="/transparency" element={<FinancePage isDark={isDark} toggleDark={toggle} />} />
                     <Route path="/social-aid" element={<SocialAidPage isDark={isDark} toggleDark={toggle} />} />
+                    <Route path="/layanan-surat" element={<LayananSuratPage isDark={isDark} toggleDark={toggle} />} />
+                    <Route path="/lapak-desa" element={<LapakDesaPage isDark={isDark} toggleDark={toggle} />} />
+                    <Route path="/pinjam-barang" element={<PinjamBarangPage isDark={isDark} toggleDark={toggle} />} />
+                    <Route path="/posyandu" element={<PosyanduPage isDark={isDark} toggleDark={toggle} />} />
+                    <Route path="/barang-hilang" element={<BarangHilangPage isDark={isDark} toggleDark={toggle} />} />
                 </Routes>
             </div>
         </Router>

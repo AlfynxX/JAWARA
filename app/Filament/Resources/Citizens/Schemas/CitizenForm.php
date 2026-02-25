@@ -32,9 +32,14 @@ class CitizenForm
                     ->label('Nama Lengkap'),
                 \Filament\Forms\Components\TextInput::make('phone')
                     ->tel()
-                    ->label('No. HP'),
+                    ->label('No. HP')
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $set('has_phone', ! empty($state));
+                    }),
                 \Filament\Forms\Components\Toggle::make('has_phone')
-                    ->label('Memiliki HP?'),
+                    ->label('Memiliki HP?')
+                    ->dehydrated(),
                 \Filament\Forms\Components\Select::make('gender')
                     ->options([
                         'male' => 'Laki-laki',

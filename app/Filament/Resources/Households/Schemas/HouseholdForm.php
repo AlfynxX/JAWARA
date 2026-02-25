@@ -49,7 +49,11 @@ class HouseholdForm
                                                     ->label('Nama Lengkap'),
                                                 \Filament\Forms\Components\TextInput::make('phone')
                                                     ->tel()
-                                                    ->label('No. HP'),
+                                                    ->label('No. HP')
+                                                    ->live(onBlur: true)
+                                                    ->afterStateUpdated(function ($state, callable $set) {
+                                                        $set('has_phone', ! empty($state));
+                                                    }),
                                                 \Filament\Forms\Components\Select::make('gender')
                                                     ->options([
                                                         'male' => 'Laki-laki',
@@ -83,15 +87,18 @@ class HouseholdForm
                                             ->schema([
                                                 \Filament\Forms\Components\Toggle::make('is_head_of_household')
                                                     ->label('Kepala Keluarga?'),
+                                                \Filament\Forms\Components\Toggle::make('has_phone')
+                                                    ->label('Memiliki HP?')
+                                                    ->dehydrated(),
                                                 \Filament\Forms\Components\Toggle::make('is_poor')
                                                     ->label('Kurang Mampu'),
                                                 \Filament\Forms\Components\Toggle::make('is_elderly')
                                                     ->label('Lansia'),
                                                 \Filament\Forms\Components\Toggle::make('is_unemployed')
                                                     ->label('Pengangguran'),
-                                            ])->columns(4),
+                                            ])->columns(5),
                                     ])
-                                    ->itemLabel(fn (array $state): ?string => $state['name'] ?? null)
+                                    ->itemLabel(fn(array $state): ?string => $state['name'] ?? null)
                                     ->collapsible()
                                     ->collapsed()
                                     ->cloneable()

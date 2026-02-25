@@ -15,7 +15,12 @@ import {
     MapPin,
     Home,
     Moon,
-    Sun
+    Sun,
+    ShoppingBag,
+    Package,
+    Heart,
+    HelpCircle,
+    Store
 } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -88,56 +93,56 @@ export default function Dashboard({ isDark, toggleDark }) {
                 </div>
 
                 {/* Stat Cards */}
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <Card className="overflow-hidden border-none shadow-md bg-gradient-to-br from-blue-50 to-white dark:from-blue-950 dark:to-background">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Kas Desa (Saldo)</CardTitle>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                    <Card className="overflow-hidden border-none shadow-md bg-gradient-to-br from-blue-50 to-white dark:from-blue-950 dark:to-background flex flex-col justify-center min-h-[140px] md:min-h-0">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 md:pb-2 p-3 md:p-6">
+                            <CardTitle className="text-[10px] md:text-sm font-medium uppercase tracking-wider text-muted-foreground">Kas Desa</CardTitle>
                             <Wallet className="h-4 w-4 text-blue-600" />
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="p-3 md:p-6 pt-0 md:pt-0">
                             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> :
-                                <div className="text-2xl font-bold text-blue-700">{formatCurrency(stats.cash_balance)}</div>
+                                <div className="text-sm md:text-2xl font-bold text-blue-700 break-words">{formatCurrency(stats.cash_balance)}</div>
                             }
-                            <p className="text-xs text-muted-foreground">Saldo kas desa saat ini</p>
+                            <p className="text-[9px] md:text-xs text-muted-foreground mt-1">Saldo saat ini</p>
                         </CardContent>
                     </Card>
 
-                    <Card className="overflow-hidden border-none shadow-md bg-gradient-to-br from-indigo-50 to-white dark:from-indigo-950 dark:to-background">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Warga</CardTitle>
+                    <Card className="overflow-hidden border-none shadow-md bg-gradient-to-br from-indigo-50 to-white dark:from-indigo-950 dark:to-background flex flex-col justify-center min-h-[140px] md:min-h-0">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 md:pb-2 p-3 md:p-6">
+                            <CardTitle className="text-[10px] md:text-sm font-medium uppercase tracking-wider text-muted-foreground">Total Warga</CardTitle>
                             <Users className="h-4 w-4 text-indigo-600" />
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="p-3 md:p-6 pt-0 md:pt-0">
                             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> :
-                                <div className="text-2xl font-bold text-indigo-700">{stats.total_citizens}</div>
+                                <div className="text-xl md:text-2xl font-bold text-indigo-700">{stats.total_citizens}</div>
                             }
-                            <p className="text-xs text-muted-foreground">Jiwa terdaftar di sistem</p>
+                            <p className="text-[9px] md:text-xs text-muted-foreground mt-1">Jiwa terdaftar</p>
                         </CardContent>
                     </Card>
 
-                    <Card className="overflow-hidden border-none shadow-md bg-gradient-to-br from-purple-50 to-white dark:from-purple-950 dark:to-background">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total KK</CardTitle>
+                    <Card className="overflow-hidden border-none shadow-md bg-gradient-to-br from-purple-50 to-white dark:from-purple-950 dark:to-background flex flex-col justify-center min-h-[140px] md:min-h-0">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 md:pb-2 p-3 md:p-6">
+                            <CardTitle className="text-[10px] md:text-sm font-medium uppercase tracking-wider text-muted-foreground">Total KK</CardTitle>
                             <Home className="h-4 w-4 text-purple-600" />
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="p-3 md:p-6 pt-0 md:pt-0">
                             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> :
-                                <div className="text-2xl font-bold text-purple-700">{stats.total_households}</div>
+                                <div className="text-xl md:text-2xl font-bold text-purple-700">{stats.total_households}</div>
                             }
-                            <p className="text-xs text-muted-foreground">Kepala Keluarga</p>
+                            <p className="text-[9px] md:text-xs text-muted-foreground mt-1">Kepala Keluarga</p>
                         </CardContent>
                     </Card>
 
-                    <Card className="overflow-hidden border-none shadow-md bg-gradient-to-br from-orange-50 to-white dark:from-orange-950 dark:to-background">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Penerima Bantuan</CardTitle>
+                    <Card className="overflow-hidden border-none shadow-md bg-gradient-to-br from-orange-50 to-white dark:from-orange-950 dark:to-background flex flex-col justify-center min-h-[140px] md:min-h-0">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 md:pb-2 p-3 md:p-6">
+                            <CardTitle className="text-[10px] md:text-sm font-medium uppercase tracking-wider text-muted-foreground">Penerima Bantuan</CardTitle>
                             <Users className="h-4 w-4 text-orange-600" />
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="p-3 md:p-6 pt-0 md:pt-0">
                             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> :
-                                <div className="text-2xl font-bold text-orange-700">{stats.total_poor + stats.total_elderly}</div>
+                                <div className="text-xl md:text-2xl font-bold text-orange-700">{stats.total_poor + stats.total_elderly}</div>
                             }
-                            <p className="text-xs text-muted-foreground">Warga Lansia & Kurang Mampu</p>
+                            <p className="text-[9px] md:text-xs text-muted-foreground mt-1">Lansia & Kurang Mampu</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -234,6 +239,62 @@ export default function Dashboard({ isDark, toggleDark }) {
                 </div>
 
                 {/* Features Grid */}
+                <div className="space-y-4">
+                    <h2 className="text-xl font-bold tracking-tight">Layanan Digital Desa</h2>
+                    <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+                        <Link to="/layanan-surat">
+                            <Card className="hover:border-primary/50 transition-all cursor-pointer h-full group">
+                                <CardHeader className="p-4 flex flex-col items-center text-center space-y-2">
+                                    <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900 group-hover:bg-primary group-hover:text-white transition-colors">
+                                        <FileText className="h-6 w-6 text-blue-600 group-hover:text-inherit" />
+                                    </div>
+                                    <CardTitle className="text-sm">Administrasi Surat</CardTitle>
+                                </CardHeader>
+                            </Card>
+                        </Link>
+                        <Link to="/lapak-desa">
+                            <Card className="hover:border-primary/50 transition-all cursor-pointer h-full group">
+                                <CardHeader className="p-4 flex flex-col items-center text-center space-y-2">
+                                    <div className="p-3 rounded-full bg-orange-100 dark:bg-orange-900 group-hover:bg-primary group-hover:text-white transition-colors">
+                                        <ShoppingBag className="h-6 w-6 text-orange-600 group-hover:text-inherit" />
+                                    </div>
+                                    <CardTitle className="text-sm">Lapak Desa</CardTitle>
+                                </CardHeader>
+                            </Card>
+                        </Link>
+                        <Link to="/pinjam-barang">
+                            <Card className="hover:border-primary/50 transition-all cursor-pointer h-full group">
+                                <CardHeader className="p-4 flex flex-col items-center text-center space-y-2">
+                                    <div className="p-3 rounded-full bg-purple-100 dark:bg-purple-900 group-hover:bg-primary group-hover:text-white transition-colors">
+                                        <Package className="h-6 w-6 text-purple-600 group-hover:text-inherit" />
+                                    </div>
+                                    <CardTitle className="text-sm">Pinjam Barang</CardTitle>
+                                </CardHeader>
+                            </Card>
+                        </Link>
+                        <Link to="/posyandu">
+                            <Card className="hover:border-primary/50 transition-all cursor-pointer h-full group">
+                                <CardHeader className="p-4 flex flex-col items-center text-center space-y-2">
+                                    <div className="p-3 rounded-full bg-red-100 dark:bg-red-900 group-hover:bg-primary group-hover:text-white transition-colors">
+                                        <Heart className="h-6 w-6 text-red-600 group-hover:text-inherit" />
+                                    </div>
+                                    <CardTitle className="text-sm">Info Posyandu</CardTitle>
+                                </CardHeader>
+                            </Card>
+                        </Link>
+                        <Link to="/barang-hilang">
+                            <Card className="hover:border-primary/50 transition-all cursor-pointer h-full group">
+                                <CardHeader className="p-4 flex flex-col items-center text-center space-y-2">
+                                    <div className="p-3 rounded-full bg-yellow-100 dark:bg-yellow-900 group-hover:bg-primary group-hover:text-white transition-colors">
+                                        <HelpCircle className="h-6 w-6 text-yellow-600 group-hover:text-inherit" />
+                                    </div>
+                                    <CardTitle className="text-sm">Barang Hilang</CardTitle>
+                                </CardHeader>
+                            </Card>
+                        </Link>
+                    </div>
+                </div>
+
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     <Card className="group hover:border-primary/50 transition-all cursor-pointer">
                         <Link to="/transparency">

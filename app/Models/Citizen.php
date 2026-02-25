@@ -13,6 +13,15 @@ class Citizen extends Model
 
     protected $guarded = ['id'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($citizen) {
+            $citizen->has_phone = ! empty($citizen->phone);
+        });
+    }
+
     protected $casts = [
         'birth_date' => 'date',
         'is_head_of_household' => 'boolean',

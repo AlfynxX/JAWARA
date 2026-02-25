@@ -47,9 +47,11 @@ class ReportForm
                     ->label('Alamat Lokasi')
                     ->default(null),
                 TextInput::make('latitude')
+                    ->label('Lintang (Latitude)')
                     ->numeric()
                     ->default(null),
                 TextInput::make('longitude')
+                    ->label('Bujur (Longitude)')
                     ->numeric()
                     ->default(null),
 

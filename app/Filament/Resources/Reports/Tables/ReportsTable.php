@@ -17,12 +17,16 @@ class ReportsTable
         return $table
             ->columns([
                 TextColumn::make('citizen.name')
+                    ->label('Warga Terdaftar')
                     ->searchable(),
                 TextColumn::make('reporter_name')
+                    ->label('Nama Pelapor (Tamu)')
                     ->searchable(),
                 TextColumn::make('reporter_phone')
+                    ->label('No. HP Pelapor')
                     ->searchable(),
                 TextColumn::make('title')
+                    ->label('Judul Laporan')
                     ->searchable(),
                 ImageColumn::make('image')
                     ->label('Foto Bukti')
@@ -38,12 +42,15 @@ class ReportsTable
                     ->limit(30)
                     ->toggleable(),
                 TextColumn::make('status')
+                    ->label('Status')
                     ->badge(),
                 TextColumn::make('created_at')
+                    ->label('Tanggal Lapor')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Terakhir Diupdate')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
