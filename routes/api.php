@@ -23,3 +23,5 @@ Route::post('/posyandu/register', [PublicApiController::class, 'registerPosyandu
 
 Route::get('/laporan-kehilangan', [PublicApiController::class, 'getLaporanKehilangan']);
 Route::post('/laporan-kehilangan', [PublicApiController::class, 'submitLaporanKehilangan']);
+
+Route::get('/gallery', [PublicApiController::class, 'getGallery']);

@@ -43,6 +43,24 @@ class PublicApiController extends Controller
         ]);
     }
 
+    public function getGallery()
+    {
+        $galleries = \App\Models\VillageGallery::where('is_active', true)
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($gallery) {
+                return [
+                    'id' => $gallery->id,
+                    'title' => $gallery->title,
+                    'description' => $gallery->description,
+                    'image_url' => $gallery->image_url,
+                ];
+            });
+
+        return response()->json($galleries);
+    }
+
     public function getFinanceData()
     {
         $records = \App\Models\FinancialRecord::latest()->take(50)->get();

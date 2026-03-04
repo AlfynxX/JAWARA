@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 @import 'tailwindcss';
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -10,7 +11,7 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
@@ -53,6 +54,11 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
+
+    --color-c-primary: var(--c-primary);
+    --color-c-secondary: var(--c-secondary);
+    --color-c-tertiary: var(--c-tertiary);
+    --color-c-bg: var(--c-bg);
 }
 
 :root {
@@ -88,6 +94,12 @@
     --sidebar-accent-foreground: #1c1c1c;
     --sidebar-border: #e4e4e7;
     --sidebar-ring: #a1a1aa;
+
+    /* User Custom Colors */
+    --c-primary: #355872;
+    --c-secondary: #7AAACE;
+    --c-tertiary: #9CD5FF;
+    --c-bg: #F7F8F0;
 }
 
 @supports (color: oklch(0 0 0)) {
@@ -158,6 +170,11 @@
     --sidebar-accent-foreground: #fafafa;
     --sidebar-border: rgba(255, 255, 255, 0.1);
     --sidebar-ring: #71717a;
+
+    --c-primary: #9CD5FF;
+    --c-secondary: #7AAACE;
+    --c-tertiary: #355872;
+    --c-bg: #0F172A;
 }
 
 @supports (color: oklch(0 0 0)) {

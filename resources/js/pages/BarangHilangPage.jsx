@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { HelpCircle, MapPin, Search, Plus, MessageCircle, ArrowLeft, Sun, Moon, Info, Camera, Calendar, AlertTriangle } from "lucide-react";
+import { HelpCircle, MapPin, Search, Plus, MessageCircle, ArrowLeft, Sun, Moon, Info, Camera, Calendar, AlertTriangle, LayoutGrid, CheckCircle2, XCircle, ChevronDown } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
@@ -73,104 +73,54 @@ export default function BarangHilangPage({ isDark, toggleDark }) {
         : reports.filter(r => r.jenis_laporan === activeTab);
 
     return (
-        <div className="flex flex-col min-h-screen">
-            <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                <div className="container flex h-16 items-center justify-between px-4 mx-auto">
-                    <div className="flex items-center gap-2">
-                        <Link to="/" className="p-2 hover:bg-muted rounded-full transition-colors">
-                            <ArrowLeft className="h-5 w-5" />
-                        </Link>
-                        <span className="text-xl font-bold tracking-tight text-primary flex items-center gap-2">
-                            <HelpCircle className="h-6 w-6" /> Papan Kehilangan & Penemuan
-                        </span>
+        <div className="flex flex-col min-h-screen bg-c-bg dark:bg-[#0F172A] font-sans selection:bg-c-secondary/30">
+            {/* Header */}
+            <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800/60 bg-white/80 dark:bg-[#0F172A]/80 backdrop-blur-md">
+                <div className="container flex h-[72px] items-center justify-between px-6 mx-auto">
+                    <div className="flex items-center gap-3">
+                        <img src="/logo.png" alt="Logo" className="h-10 w-auto object-contain fallback-logo bg-c-tertiary p-1 rounded-full" />
+                        <span className="text-xl font-extrabold tracking-tight text-c-primary dark:text-white">Jawara Portal</span>
                     </div>
+                    <nav className="hidden md:flex items-center gap-8">
+                        <Link to="/" className="text-sm font-semibold text-c-primary border-b-2 border-c-primary pb-1 pt-1">Beranda</Link>
+
+                        <div className="relative group pt-1">
+                            <button className="flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-c-primary dark:text-slate-400 dark:hover:text-white transition-colors pb-1">
+                                Layanan Digital <ChevronDown className="h-4 w-4" />
+                            </button>
+                            <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#1E293B] rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-2.5 overflow-hidden translate-y-2 group-hover:translate-y-0">
+                                <Link to="/layanan-surat" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-c-secondary dark:hover:text-blue-400 transition-colors">Administrasi Surat</Link>
+                                <Link to="/lapak-desa" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Lapak Desa</Link>
+                                <Link to="/pinjam-barang" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-fuchsia-600 dark:hover:text-fuchsia-400 transition-colors">Pinjam Barang</Link>
+                                <Link to="/posyandu" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-red-600 dark:hover:text-red-400 transition-colors">Info Posyandu</Link>
+                                <Link to="/barang-hilang" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">Barang Hilang</Link>
+                                <Link to="/social-aid" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Penerima Bantuan</Link>
+                                <Link to="/finance" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Transparansi Keuangan</Link>
+                                <div className="h-px w-full bg-slate-100 dark:bg-slate-800 my-1.5"></div>
+                                <Link to="/report" className="block px-5 py-2.5 text-sm font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors">Layanan Pengaduan</Link>
+                            </div>
+                        </div>
+                    </nav>
                     <div className="flex items-center gap-4">
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button size="sm" className="gap-2">
-                                    <Plus className="h-4 w-4" /> Bikin Laporan
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
-                                <DialogHeader>
-                                    <DialogTitle>Buat Laporan Baru</DialogTitle>
-                                    <DialogDescription>
-                                        Laporkan barang yang hilang atau ditemukan. Admin akan meninjau sebelum dipublikasikan.
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <form onSubmit={handleSubmit} className="space-y-4 py-4">
-                                    <div className="space-y-2">
-                                        <Label>Jenis Laporan</Label>
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <label className="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-muted font-medium transition-colors">
-                                                <input type="radio" name="jenis_laporan" value="kehilangan" required defaultChecked className="text-primary" />
-                                                Kehilangan
-                                            </label>
-                                            <label className="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-muted font-medium transition-colors">
-                                                <input type="radio" name="jenis_laporan" value="penemuan" required className="text-primary" />
-                                                Penemuan
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="nik">NIK (Opsional)</Label>
-                                            <Input id="nik" name="nik" placeholder="NIK KTP" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="nomor_wa">WhatsApp</Label>
-                                            <Input id="nomor_wa" name="nomor_wa" required placeholder="08xxx" />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="nama_barang">Nama Barang</Label>
-                                        <Input id="nama_barang" name="nama_barang" required placeholder="Contoh: Dompet Kulit Cokelat" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="lokasi">Lokasi Kejadian / Ditemukan</Label>
-                                        <div className="relative">
-                                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                            <Input id="lokasi" name="lokasi" required placeholder="Contoh: Depan Masjid Al-Ikhlas" className="pl-10" />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="ciri_ciri">Ciri-ciri / Deskripsi</Label>
-                                        <Textarea id="ciri_ciri" name="ciri_ciri" required placeholder="Sebutkan ciri-ciri mendetail agar mudah dikenali" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="foto">Foto Barang</Label>
-                                        <Input id="foto" name="foto" type="file" accept="image/*" />
-                                    </div>
-                                    <Button type="submit" className="w-full" disabled={submitting}>
-                                        {submitting ? "Mengirim..." : "Kirim Laporan"}
-                                    </Button>
-                                    {success && (
-                                        <div className="p-3 bg-green-100 text-green-700 rounded-lg text-sm text-center">
-                                            Laporan berhasil terkirim! Sedang ditinjau Admin.
-                                        </div>
-                                    )}
-                                    {error && (
-                                        <div className="p-3 bg-red-100 text-red-700 rounded-lg text-sm text-center">
-                                            {error}
-                                        </div>
-                                    )}
-                                </form>
-                            </DialogContent>
-                        </Dialog>
-                        <button onClick={toggleDark} className="p-2 rounded-full hover:bg-muted transition-colors">
-                            {isDark ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-slate-600" />}
+                        <button
+                            onClick={toggleDark}
+                            className="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                            aria-label="Toggle dark mode"
+                        >
+                            {isDark ? <Sun className="h-5 w-5 text-amber-400" /> : <Moon className="h-5 w-5 text-slate-600" />}
                         </button>
                     </div>
                 </div>
             </header>
 
-            <main className="flex-1 container px-4 py-8 mx-auto">
-                <div className="flex flex-col md:flex-row gap-6 items-center justify-between mb-8">
-                    <div className="flex p-1 bg-muted rounded-lg w-fit">
+            <main className="flex-1 container px-4 sm:px-6 py-8 mx-auto max-w-7xl">
+                <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between mb-8">
+                    <div className="flex p-1.5 bg-slate-200/50 dark:bg-slate-800/50 rounded-xl w-full md:w-fit overflow-x-auto">
                         <Button
                             variant={activeTab === 'semua' ? 'secondary' : 'ghost'}
                             size="sm"
                             onClick={() => setActiveTab('semua')}
+                            className={`rounded-lg px-4 h-9 font-bold transition-all ${activeTab === 'semua' ? 'bg-white dark:bg-slate-700 text-c-primary dark:text-white shadow-sm' : 'text-slate-500 hover:text-c-primary dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800'}`}
                         >
                             Semua
                         </Button>
@@ -178,83 +128,104 @@ export default function BarangHilangPage({ isDark, toggleDark }) {
                             variant={activeTab === 'kehilangan' ? 'secondary' : 'ghost'}
                             size="sm"
                             onClick={() => setActiveTab('kehilangan')}
-                            className="gap-2"
+                            className={`rounded-lg px-4 gap-2 h-9 font-bold transition-all ${activeTab === 'kehilangan' ? 'bg-white dark:bg-slate-700 text-red-600 dark:text-red-400 shadow-sm' : 'text-slate-500 hover:text-c-primary dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800'}`}
                         >
-                            <AlertTriangle className="h-3 w-3 text-red-500" /> Kehilangan
+                            <AlertTriangle className="h-4 w-4" /> Kehilangan
                         </Button>
                         <Button
                             variant={activeTab === 'penemuan' ? 'secondary' : 'ghost'}
                             size="sm"
                             onClick={() => setActiveTab('penemuan')}
-                            className="gap-2"
+                            className={`rounded-lg px-4 gap-2 h-9 font-bold transition-all ${activeTab === 'penemuan' ? 'bg-white dark:bg-slate-700 text-c-secondary dark:text-blue-400 shadow-sm' : 'text-slate-500 hover:text-c-primary dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800'}`}
                         >
-                            <Info className="h-3 w-3 text-blue-500" /> Penemuan
+                            <Info className="h-4 w-4" /> Penemuan
                         </Button>
                     </div>
-                    <div className="text-sm text-muted-foreground flex items-center gap-2">
-                        <Info className="h-4 w-4" /> Daftar ini hanya menampilkan laporan yang sudah terverifikasi.
+                    <div className="text-sm font-medium text-slate-500 dark:text-slate-400 flex items-center gap-2 bg-blue-50 dark:bg-c-secondary/10 px-4 py-2 rounded-xl text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50">
+                        <Info className="h-4 w-4 shrink-0" /> Daftar ini hanya menampilkan laporan yang sudah terverifikasi.
                     </div>
                 </div>
 
                 {loading ? (
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {[1, 2, 3].map(i => (
-                            <Card key={i} className="animate-pulse h-48 bg-muted" />
+                            <Card key={i} className="animate-pulse border-none shadow-sm dark:shadow-none bg-white dark:bg-[#1E293B] rounded-2xl overflow-hidden">
+                                <div className="h-48 bg-slate-100 dark:bg-slate-800" />
+                                <div className="p-5 space-y-3">
+                                    <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded w-3/4" />
+                                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2" />
+                                </div>
+                            </Card>
                         ))}
                     </div>
                 ) : filteredReports.length > 0 ? (
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {filteredReports.map((report) => (
-                            <Card key={report.id} className="overflow-hidden border-muted group">
-                                <div className="h-48 bg-muted relative">
+                            <Card key={report.id} className="overflow-hidden border-none shadow-sm dark:shadow-none bg-white dark:bg-[#1E293B] rounded-[1.5rem] group hover:shadow-xl transition-all duration-300 flex flex-col relative">
+                                <div className={`absolute top-0 left-0 right-0 h-1.5 z-10 ${report.jenis_laporan === 'kehilangan' ? 'bg-red-500' : 'bg-c-secondary'}`}></div>
+                                <div className="h-52 bg-slate-100 dark:bg-slate-800 relative overflow-hidden">
                                     {report.foto_barang ? (
-                                        <img src={`/storage/${report.foto_barang}`} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                                        <img src={`/storage/${report.foto_barang}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center">
-                                            <Camera className="h-12 w-12 text-muted-foreground/20" />
+                                            <Camera className="h-16 w-16 text-slate-300 dark:text-slate-600" />
                                         </div>
                                     )}
-                                    <div className="absolute top-2 left-2">
-                                        <Badge className={`${report.jenis_laporan === 'kehilangan' ? 'bg-red-500' : 'bg-blue-500'} border-none uppercase text-[10px]`}>
+                                    <div className="absolute top-4 left-4 z-20 shadow-md">
+                                        <Badge className={`${report.jenis_laporan === 'kehilangan' ? 'bg-red-600 text-white' : 'bg-c-primary text-white'} border-none uppercase text-[10px] font-extrabold px-3 py-1.5 tracking-wider`}>
                                             {report.jenis_laporan}
                                         </Badge>
                                     </div>
+                                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent pointer-events-none z-10" />
+                                    <div className="absolute bottom-3 left-4 right-4 z-20 flex items-center gap-1.5 text-white/90 text-[11px] font-medium drop-shadow-md">
+                                        <Calendar className="h-3.5 w-3.5" />
+                                        <span>Diunggah {new Date(report.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                                    </div>
                                 </div>
-                                <CardHeader className="p-4 space-y-1">
-                                    <CardTitle className="text-xl line-clamp-1">{report.nama_barang}</CardTitle>
-                                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                                        <MapPin className="h-3 w-3" /> {report.lokasi_kejadian}
+                                <CardHeader className="p-5 pb-2">
+                                    <CardTitle className="text-xl font-bold text-c-primary dark:text-white line-clamp-1">{report.nama_barang}</CardTitle>
+                                    <div className="flex items-center gap-1.5 text-[13px] text-c-secondary dark:text-blue-400 font-medium pt-1">
+                                        <MapPin className="h-4 w-4" /> <span className="line-clamp-1">{report.lokasi_kejadian}</span>
                                     </div>
                                 </CardHeader>
-                                <CardContent className="px-4 pb-4 pt-0">
-                                    <p className="text-xs text-muted-foreground line-clamp-2 italic mb-3">
+                                <CardContent className="px-5 pb-5 pt-2 flex-1">
+                                    <p className="text-[13px] text-slate-600 dark:text-slate-400 line-clamp-3 italic mb-3 leading-relaxed">
                                         "{report.deskripsi_ciri_ciri}"
                                     </p>
-                                    <div className="text-[10px] text-muted-foreground flex items-center gap-1 pt-2 border-t">
-                                        <Calendar className="h-3 w-3" />
-                                        Dilaporkan pada {new Date(report.created_at).toLocaleDateString('id-ID')}
-                                    </div>
                                 </CardContent>
-                                <CardFooter className="p-4 pt-0">
+                                <CardFooter className="p-5 pt-0 mt-auto">
                                     <Button
-                                        className="w-full gap-2"
+                                        className="w-full gap-2 h-11 rounded-xl font-bold border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-c-secondary hover:text-white hover:border-blue-500 transition-all shadow-sm"
                                         variant="outline"
                                         onClick={() => window.open(`https://wa.me/62${report.nomor_wa_kontak.replace(/^0/, '')}?text=Halo, saya menghubungi terkait laporan ${report.jenis_laporan} ${report.nama_barang} di Papan Pengumuman Desa.`, '_blank')}
                                     >
-                                        <MessageCircle className="h-4 w-4" /> Hubungi Pelapor
+                                        <MessageCircle className="h-4 w-4" /> Hubungi {report.jenis_laporan === 'kehilangan' ? 'Pemilik' : 'Penemu'}
                                     </Button>
                                 </CardFooter>
                             </Card>
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-24 border-2 border-dashed rounded-2xl bg-muted/5">
-                        <Search className="h-16 w-16 mx-auto mb-4 text-muted-foreground/20" />
-                        <h3 className="text-xl font-semibold">Tidak ada laporan aktif</h3>
-                        <p className="text-muted-foreground">Belum ada laporan {activeTab !== 'semua' ? activeTab : ''} yang dipublikasikan saat ini.</p>
+                    <div className="text-center py-24 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-3xl bg-white/50 dark:bg-[#1E293B]/50">
+                        <Search className="h-16 w-16 mx-auto mb-4 text-slate-300 dark:text-slate-600" />
+                        <h3 className="text-xl font-bold text-c-primary dark:text-white">Tidak ada laporan aktif</h3>
+                        <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium">Belum ada laporan {activeTab !== 'semua' ? activeTab : ''} yang dipublikasikan saat ini.</p>
                     </div>
                 )}
             </main>
+
+            {/* Footer */}
+            <footer className="border-t border-[#7AAACE]/20 dark:border-slate-800/80 bg-white dark:bg-[#0F172A] mt-auto">
+                <div className="container px-6 py-6 flex flex-col md:flex-row items-center justify-between mx-auto">
+                    <div className="flex items-center gap-2 mb-3 md:mb-0">
+                        <img src="/logo.png" alt="Logo" className="h-6 w-auto object-contain fallback-logo bg-c-tertiary p-0.5 rounded-full" />
+                        <span className="text-sm font-bold text-[#355872] dark:text-slate-300 tracking-tight">Jawara Portal</span>
+                    </div>
+                    <div className="text-sm font-medium text-slate-400">
+                        © {new Date().getFullYear()} JAWARA. Hak Cipta Dilindungi Undang-Undang.
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 }

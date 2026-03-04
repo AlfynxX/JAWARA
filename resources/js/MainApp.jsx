@@ -20,7 +20,7 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<Dashboard isDark={isDark} toggleDark={toggle} />} />
                     <Route path="/report" element={<ReportPage isDark={isDark} toggleDark={toggle} />} />
-                    <Route path="/transparency" element={<FinancePage isDark={isDark} toggleDark={toggle} />} />
+                    <Route path="/finance" element={<FinancePage isDark={isDark} toggleDark={toggle} />} />
                     <Route path="/social-aid" element={<SocialAidPage isDark={isDark} toggleDark={toggle} />} />
                     <Route path="/layanan-surat" element={<LayananSuratPage isDark={isDark} toggleDark={toggle} />} />
                     <Route path="/lapak-desa" element={<LapakDesaPage isDark={isDark} toggleDark={toggle} />} />

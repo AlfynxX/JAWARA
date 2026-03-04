@@ -7,16 +7,17 @@ import { Textarea } from "@/components/ui/textarea";
 import {
     ArrowLeft, Send, AlertCircle, MessageCircle,
     Clock, Search, Loader2, History, ChevronDown,
-    MapPin, Camera, X, Moon, Sun
+    MapPin, Camera, X, Moon, Sun, LayoutGrid, CheckCircle2, ShieldAlert
 } from "lucide-react";
 import { Link } from 'react-router-dom';
 
 const STATUS_COLOR = {
-    pending: 'text-yellow-600',
-    in_process: 'text-blue-600',
-    resolved: 'text-green-600',
-    rejected: 'text-red-600',
+    pending: 'text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-500/20 border-amber-200 dark:border-amber-900',
+    in_process: 'text-c-secondary dark:text-blue-400 bg-blue-100 dark:bg-c-secondary/20 border-blue-200 dark:border-blue-900',
+    resolved: 'text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-500/20 border-emerald-200 dark:border-emerald-900',
+    rejected: 'text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-500/20 border-red-200 dark:border-red-900',
 };
+
 const STATUS_LABEL = {
     pending: 'Menunggu',
     in_process: 'Sedang Diproses',
@@ -45,8 +46,10 @@ export default function ReportPage({ isDark, toggleDark }) {
     const fileInputRef = useRef(null);
 
     useEffect(() => {
-        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [reports]);
+        if (showHistory) {
+            chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [reports, showHistory]);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -158,254 +161,361 @@ export default function ReportPage({ isDark, toggleDark }) {
     };
 
     return (
-        <div className="flex flex-col min-h-screen bg-muted/20">
+        <div className="flex flex-col min-h-screen bg-c-bg dark:bg-[#0F172A] font-sans selection:bg-amber-500/30">
             {/* Header */}
-            <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur">
-                <div className="container flex h-16 items-center gap-4 px-4 mx-auto">
-                    <Link to="/">
-                        <Button variant="ghost" size="sm" className="gap-2">
-                            <ArrowLeft className="h-4 w-4" /> Kembali
-                        </Button>
-                    </Link>
-                    <div>
-                        <h1 className="font-bold text-lg leading-none">Layanan Pengaduan Warga</h1>
-                        <p className="text-xs text-muted-foreground">Sampaikan laporan Anda langsung ke Admin Desa</p>
+            <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800/60 bg-white/80 dark:bg-[#0F172A]/80 backdrop-blur-md">
+                <div className="container flex h-[72px] items-center justify-between px-6 mx-auto">
+                    <div className="flex items-center gap-3">
+                        <img src="/logo.png" alt="Logo" className="h-10 w-auto object-contain fallback-logo bg-c-tertiary p-1 rounded-full" />
+                        <span className="text-xl font-extrabold tracking-tight text-c-primary dark:text-white">Jawara Portal</span>
                     </div>
-                    <button
-                        onClick={toggleDark}
-                        className="ml-auto p-2 rounded-full hover:bg-muted transition-colors"
-                        aria-label="Toggle dark mode"
-                    >
-                        {isDark ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-slate-600" />}
-                    </button>
+                    <nav className="hidden md:flex items-center gap-8">
+                        <Link to="/" className="text-sm font-semibold text-c-primary border-b-2 border-c-primary pb-1 pt-1">Beranda</Link>
+
+                        <div className="relative group pt-1">
+                            <button className="flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-c-primary dark:text-slate-400 dark:hover:text-white transition-colors pb-1">
+                                Layanan Digital <ChevronDown className="h-4 w-4" />
+                            </button>
+                            <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#1E293B] rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-2.5 overflow-hidden translate-y-2 group-hover:translate-y-0">
+                                <Link to="/layanan-surat" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-c-secondary dark:hover:text-blue-400 transition-colors">Administrasi Surat</Link>
+                                <Link to="/lapak-desa" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Lapak Desa</Link>
+                                <Link to="/pinjam-barang" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-fuchsia-600 dark:hover:text-fuchsia-400 transition-colors">Pinjam Barang</Link>
+                                <Link to="/posyandu" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-red-600 dark:hover:text-red-400 transition-colors">Info Posyandu</Link>
+                                <Link to="/barang-hilang" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">Barang Hilang</Link>
+                                <Link to="/social-aid" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Penerima Bantuan</Link>
+                                <Link to="/finance" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Transparansi Keuangan</Link>
+                                <div className="h-px w-full bg-slate-100 dark:bg-slate-800 my-1.5"></div>
+                                <Link to="/report" className="block px-5 py-2.5 text-sm font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors">Layanan Pengaduan</Link>
+                            </div>
+                        </div>
+                    </nav>
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={toggleDark}
+                            className="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                            aria-label="Toggle dark mode"
+                        >
+                            {isDark ? <Sun className="h-5 w-5 text-amber-400" /> : <Moon className="h-5 w-5 text-slate-600" />}
+                        </button>
+                    </div>
                 </div>
             </header>
 
-            <main className="flex-1 container max-w-3xl px-4 py-8 mx-auto space-y-6">
+            <main className="flex-1 container max-w-4xl px-4 py-8 mx-auto space-y-8">
+                <div className="space-y-2 text-center md:text-left mb-6">
+                    <h1 className="text-3xl font-extrabold tracking-tight text-c-primary dark:text-white">Sampaikan Laporan Anda</h1>
+                    <p className="text-slate-500 dark:text-slate-400 font-medium text-sm md:text-base">Laporkan masalah, keluhan, atau aspirasi Anda secara aman ke Pemerintah Desa.</p>
+                </div>
 
-                {/* Submit Report Form */}
-                <Card className="shadow-md border-t-4 border-t-primary">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <MessageCircle className="h-5 w-5 text-primary" />
-                            Kirim Laporan Baru
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="space-y-1.5">
-                                    <Label htmlFor="name">Nama Lengkap <span className="text-red-500">*</span></Label>
-                                    <Input
-                                        id="name"
-                                        placeholder="Masukkan nama Anda"
-                                        value={formData.name}
-                                        onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                        required
-                                    />
-                                </div>
-                                <div className="space-y-1.5">
-                                    <Label htmlFor="subject">Subjek / Judul <span className="text-red-500">*</span></Label>
-                                    <Input
-                                        id="subject"
-                                        placeholder="Contoh: Jalan rusak RT 03"
-                                        value={formData.subject}
-                                        onChange={e => setFormData({ ...formData, subject: e.target.value })}
-                                        required
-                                    />
-                                </div>
-                            </div>
+                <div className="grid lg:grid-cols-5 gap-8">
+                    {/* Submit Report Form - Takes up 3 columns on large screens */}
+                    <div className="lg:col-span-3 space-y-6">
+                        <Card className="border-none shadow-sm dark:shadow-none bg-white dark:bg-[#1E293B] rounded-[1.5rem] overflow-hidden relative">
+                            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-400 to-orange-500"></div>
 
-                            <div className="space-y-1.5">
-                                <Label htmlFor="description">Isi Laporan <span className="text-red-500">*</span></Label>
-                                <Textarea
-                                    id="description"
-                                    placeholder="Jelaskan laporan Anda secara rinci..."
-                                    className="min-h-[100px] resize-none"
-                                    value={formData.description}
-                                    onChange={e => setFormData({ ...formData, description: e.target.value })}
-                                    required
-                                />
-                            </div>
+                            <CardHeader className="p-6 md:p-8 pb-4">
+                                <CardTitle className="text-xl font-bold text-c-primary dark:text-white flex items-center gap-2">
+                                    <MessageCircle className="h-5 w-5 text-amber-500" />
+                                    Formulir Laporan Baru
+                                </CardTitle>
+                            </CardHeader>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {/* Image Upload */}
-                                <div className="space-y-1.5">
-                                    <Label>Lampirkan Foto (Opsional)</Label>
-                                    <div className="flex flex-col gap-2">
-                                        <input
-                                            type="file"
-                                            ref={fileInputRef}
-                                            accept="image/*"
-                                            onChange={handleImageChange}
-                                            className="hidden"
-                                            id="image-upload"
-                                        />
-
-                                        {!imagePreview ? (
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                className="w-full h-20 border-dashed border-2 flex flex-col gap-1 items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50"
-                                                onClick={() => fileInputRef.current?.click()}
-                                            >
-                                                <Camera className="h-5 w-5" />
-                                                <span className="text-xs">Klik untuk tambah foto</span>
-                                            </Button>
-                                        ) : (
-                                            <div className="relative rounded-md overflow-hidden border h-40 group">
-                                                <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                                                <Button
-                                                    type="button"
-                                                    variant="destructive"
-                                                    size="icon"
-                                                    className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                                                    onClick={removeImage}
-                                                >
-                                                    <X className="h-3 w-3" />
-                                                </Button>
-                                            </div>
-                                        )}
+                            <CardContent className="px-6 md:px-8 pb-4">
+                                {successMsg ? (
+                                    <div className="py-10 flex flex-col items-center justify-center gap-4 text-center">
+                                        <div className="p-4 bg-emerald-100 dark:bg-emerald-900/50 rounded-full animate-in zoom-in duration-300">
+                                            <CheckCircle2 className="h-12 w-12 text-emerald-600 dark:text-emerald-400" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-bold text-c-primary dark:text-white">Laporan Berhasil Terkirim!</h3>
+                                            <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-2 max-w-[300px] mx-auto leading-relaxed">{successMsg}</p>
+                                        </div>
+                                        <Button variant="outline" onClick={() => setSuccessMsg('')} className="mt-4 font-bold rounded-xl border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300">
+                                            Kirim Laporan Lain
+                                        </Button>
                                     </div>
-                                </div>
-
-                                {/* Location */}
-                                <div className="space-y-1.5">
-                                    <Label>Lokasi Laporan (Opsional)</Label>
-                                    <div className="border rounded-md p-3 space-y-2 bg-muted/10">
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-sm font-medium text-muted-foreground">
-                                                {location.latitude ? "Lokasi Disematkan" : "Belum ada lokasi"}
-                                            </span>
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={handleGetLocation}
-                                                disabled={location.loading}
-                                                className="h-8 gap-1.5"
-                                            >
-                                                {location.loading ? <Loader2 className="h-3 w-3 animate-spin" /> : <MapPin className="h-3.5 w-3.5 text-red-500" />}
-                                                {location.latitude ? "Perbarui" : "Bagikan Lokasi"}
-                                            </Button>
+                                ) : (
+                                    <form onSubmit={handleSubmit} className="space-y-5">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div className="space-y-2">
+                                                <Label htmlFor="name" className="text-slate-700 dark:text-slate-300 font-semibold">Nama Lengkap <span className="text-red-500">*</span></Label>
+                                                <Input
+                                                    id="name"
+                                                    placeholder="Masukkan nama Anda"
+                                                    value={formData.name}
+                                                    onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                                    required
+                                                    className="bg-slate-50 dark:bg-[#0F172A] border-slate-200 dark:border-slate-800 focus-visible:ring-amber-500 h-11 rounded-xl shadow-sm"
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="subject" className="text-slate-700 dark:text-slate-300 font-semibold">Subjek / Judul <span className="text-red-500">*</span></Label>
+                                                <Input
+                                                    id="subject"
+                                                    placeholder="Contoh: Jalan berlubang"
+                                                    value={formData.subject}
+                                                    onChange={e => setFormData({ ...formData, subject: e.target.value })}
+                                                    required
+                                                    className="bg-slate-50 dark:bg-[#0F172A] border-slate-200 dark:border-slate-800 focus-visible:ring-amber-500 h-11 rounded-xl shadow-sm"
+                                                />
+                                            </div>
                                         </div>
 
-                                        {location.error && (
-                                            <p className="text-xs text-red-500">{location.error}</p>
-                                        )}
+                                        <div className="space-y-2">
+                                            <Label htmlFor="description" className="text-slate-700 dark:text-slate-300 font-semibold">Keterangan Detail <span className="text-red-500">*</span></Label>
+                                            <Textarea
+                                                id="description"
+                                                placeholder="Ceritakan kejadian atau keluhan Anda secara rinci di sini..."
+                                                className="min-h-[120px] resize-none bg-slate-50 dark:bg-[#0F172A] border-slate-200 dark:border-slate-800 focus-visible:ring-amber-500 rounded-xl shadow-sm p-4 text-base"
+                                                value={formData.description}
+                                                onChange={e => setFormData({ ...formData, description: e.target.value })}
+                                                required
+                                            />
+                                        </div>
 
-                                        {location.latitude && (
-                                            <div className="text-xs bg-background p-2 rounded border font-mono truncate">
-                                                {location.latitude}, {location.longitude}
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                            {/* Image Upload */}
+                                            <div className="space-y-2">
+                                                <Label className="text-slate-700 dark:text-slate-300 font-semibold">Bukti Foto (Opsional)</Label>
+                                                <div className="flex flex-col gap-2">
+                                                    <input
+                                                        type="file"
+                                                        ref={fileInputRef}
+                                                        accept="image/*"
+                                                        onChange={handleImageChange}
+                                                        className="hidden"
+                                                        id="image-upload"
+                                                    />
 
-                            <div className="space-y-1.5">
-                                <Label htmlFor="nik" className="flex items-center gap-1">
-                                    NIK <span className="text-xs text-muted-foreground">(opsional — agar laporan bisa dilacak)</span>
-                                </Label>
-                                <Input
-                                    id="nik"
-                                    placeholder="NIK 16 digit (opsional)"
-                                    value={formData.nik}
-                                    onChange={e => setFormData({ ...formData, nik: e.target.value })}
-                                />
-                            </div>
-
-                            {successMsg && (
-                                <div className="flex items-start gap-2 p-3 rounded-lg bg-green-50 border border-green-200 text-green-800 text-sm">
-                                    <MessageCircle className="h-4 w-4 mt-0.5 shrink-0" />
-                                    {successMsg}
-                                </div>
-                            )}
-                            {errorMsg && (
-                                <div className="flex items-start gap-2 p-3 rounded-lg bg-red-50 border border-red-200 text-red-800 text-sm">
-                                    <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
-                                    {errorMsg}
-                                </div>
-                            )}
-
-                            <Button type="submit" className="w-full gap-2" size="lg" disabled={submitting}>
-                                {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                                Kirim Laporan
-                            </Button>
-                        </form>
-                    </CardContent>
-                    <CardFooter className="bg-muted/30 text-xs text-muted-foreground flex items-center gap-1.5 py-3">
-                        <AlertCircle className="h-3 w-3" />
-                        Laporan dikirim secara privat dan hanya dapat dilihat oleh Admin Desa.
-                    </CardFooter>
-                </Card>
-
-                {/* Track Report Section */}
-                <Card className="shadow-sm">
-                    <CardHeader
-                        className="cursor-pointer select-none"
-                        onClick={() => setShowHistory(!showHistory)}
-                    >
-                        <CardTitle className="flex items-center justify-between text-base">
-                            <span className="flex items-center gap-2">
-                                <History className="h-4 w-4 text-muted-foreground" />
-                                Lacak Riwayat Laporan (cari nama)
-                            </span>
-                            <ChevronDown className={`h-4 w-4 transition-transform ${showHistory ? 'rotate-180' : ''}`} />
-                        </CardTitle>
-                    </CardHeader>
-                    {showHistory && (
-                        <CardContent className="space-y-4 pt-0">
-                            <form onSubmit={handleTrackHistory} className="flex gap-2">
-                                <Input
-                                    placeholder="Masukkan nama pelapor"
-                                    value={trackName}
-                                    onChange={e => setTrackName(e.target.value)}
-                                    required
-                                />
-                                <Button type="submit" disabled={loadingHistory} className="gap-2 shrink-0">
-                                    {loadingHistory ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
-                                    Cek
-                                </Button>
-                            </form>
-
-                            {historyLoaded && (
-                                reports.length === 0 ? (
-                                    <p className="text-center text-sm text-muted-foreground py-4">
-                                        Tidak ada laporan yang ditemukan untuk NIK ini.
-                                    </p>
-                                ) : (
-                                    <div className="space-y-3">
-                                        {reports.map((report, idx) => (
-                                            <div key={idx} className="p-4 rounded-lg border bg-background space-y-2">
-                                                <div className="flex items-start justify-between gap-2">
-                                                    <div>
-                                                        <p className="font-semibold text-sm">{report.title}</p>
-                                                        <p className="text-xs text-muted-foreground mt-0.5">{report.content}</p>
-                                                    </div>
-                                                    <span className={`text-xs font-bold shrink-0 ${STATUS_COLOR[report.status] || 'text-gray-500'}`}>
-                                                        {STATUS_LABEL[report.status] || report.status}
-                                                    </span>
-                                                </div>
-                                                {report.admin_response && (
-                                                    <div className="bg-blue-50 border border-blue-100 rounded p-2 text-xs text-blue-800">
-                                                        <strong>Balasan Admin:</strong> {report.admin_response}
-                                                    </div>
-                                                )}
-                                                <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                                                    <Clock className="h-3 w-3" />
-                                                    {new Date(report.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                                    {!imagePreview ? (
+                                                        <Button
+                                                            type="button"
+                                                            variant="outline"
+                                                            className="w-full h-[100px] border-dashed border-2 flex flex-col gap-2 items-center justify-center text-slate-400 hover:text-amber-500 hover:border-amber-400 hover:bg-amber-50 dark:hover:bg-amber-500/10 rounded-xl transition-all"
+                                                            onClick={() => fileInputRef.current?.click()}
+                                                        >
+                                                            <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-full">
+                                                                <Camera className="h-5 w-5" />
+                                                            </div>
+                                                            <span className="text-xs font-semibold">Pilih Foto</span>
+                                                        </Button>
+                                                    ) : (
+                                                        <div className="relative rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 h-[100px] group shadow-sm">
+                                                            <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                                                                <Button
+                                                                    type="button"
+                                                                    variant="destructive"
+                                                                    size="sm"
+                                                                    className="font-bold rounded-lg shadow-lg gap-2"
+                                                                    onClick={removeImage}
+                                                                >
+                                                                    <X className="h-4 w-4" /> Hapus
+                                                                </Button>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
-                                        ))}
-                                        <div ref={chatEndRef} />
-                                    </div>
-                                )
-                            )}
-                        </CardContent>
-                    )}
-                </Card>
+
+                                            {/* Location */}
+                                            <div className="space-y-2">
+                                                <Label className="text-slate-700 dark:text-slate-300 font-semibold">Lokasi Terkini (Opsional)</Label>
+                                                <div className="border border-slate-200 dark:border-slate-800 rounded-xl p-3 bg-slate-50 dark:bg-[#0F172A] h-[100px] flex flex-col justify-center">
+                                                    {!location.latitude ? (
+                                                        <div className="text-center space-y-3">
+                                                            <p className="text-xs text-slate-500 font-medium">Bantu kami menemukan lokasi akurat</p>
+                                                            <Button
+                                                                type="button"
+                                                                variant="outline"
+                                                                size="sm"
+                                                                onClick={handleGetLocation}
+                                                                disabled={location.loading}
+                                                                className="h-9 gap-2 w-full font-bold rounded-lg border-slate-300 hover:bg-amber-50 hover:text-amber-600 hover:border-amber-200 transition-colors"
+                                                            >
+                                                                {location.loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <MapPin className="h-3.5 w-3.5" />}
+                                                                Bagikan Lokasi
+                                                            </Button>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="space-y-2">
+                                                            <div className="flex items-center justify-between">
+                                                                <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                                                                    <CheckCircle2 className="h-3.5 w-3.5" /> Tersemat
+                                                                </div>
+                                                                <Button
+                                                                    type="button"
+                                                                    variant="ghost"
+                                                                    size="sm"
+                                                                    className="h-6 px-2 text-[10px] uppercase font-bold text-slate-500 hover:text-c-primary"
+                                                                    onClick={handleGetLocation}
+                                                                >
+                                                                    Perbarui
+                                                                </Button>
+                                                            </div>
+                                                            <div className="text-[10px] bg-white dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-slate-700 font-mono truncate text-slate-600 dark:text-slate-300 shadow-sm">
+                                                                {location.latitude}, {location.longitude}
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {location.error && (
+                                                        <p className="text-[10px] text-red-500 font-medium mt-2 text-center">{location.error}</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-2 pt-2">
+                                            <Label htmlFor="nik" className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+                                                <span className="text-slate-700 dark:text-slate-300 font-semibold">NIK KTP Kamu</span>
+                                                <span className="text-[11px] text-slate-500 font-medium">(Opsional — Diperlukan jika ingin melacak progres laporan)</span>
+                                            </Label>
+                                            <Input
+                                                id="nik"
+                                                name="nik"
+                                                placeholder="Contoh: 3201..."
+                                                value={formData.nik}
+                                                onChange={e => setFormData({ ...formData, nik: e.target.value })}
+                                                className="bg-slate-50 dark:bg-[#0F172A] border-slate-200 dark:border-slate-800 focus-visible:ring-amber-500 h-11 rounded-xl shadow-sm"
+                                            />
+                                        </div>
+
+                                        {errorMsg && (
+                                            <div className="flex items-start gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-800 dark:text-red-400 text-sm font-medium">
+                                                <AlertCircle className="h-5 w-5 mt-0.5 shrink-0" />
+                                                <span className="leading-relaxed">{errorMsg}</span>
+                                            </div>
+                                        )}
+
+                                        <Button type="submit" className="w-full gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold h-12 rounded-xl shadow-md mt-4 text-base" disabled={submitting}>
+                                            {submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+                                            {submitting ? 'Mengirim...' : 'Kirim Pengaduan'}
+                                        </Button>
+                                    </form>
+                                )}
+                            </CardContent>
+                            <CardFooter className="bg-slate-50 dark:bg-[#0F172A]/50 border-t border-slate-100 dark:border-slate-800/80 p-4">
+                                <p className="text-xs text-slate-500 font-medium flex items-center justify-center w-full gap-2">
+                                    <ShieldAlert className="h-3.5 w-3.5" />
+                                    Data diri dan laporan dirahasiakan
+                                </p>
+                            </CardFooter>
+                        </Card>
+                    </div>
+
+                    {/* Track Report Section - Takes up 2 columns */}
+                    <div className="lg:col-span-2 space-y-6">
+                        <Card className="border-none shadow-sm dark:shadow-none bg-white dark:bg-[#1E293B] rounded-[1.5rem] overflow-hidden lg:sticky lg:top-24">
+                            <CardHeader
+                                className="p-6 border-b border-slate-100 dark:border-slate-800 cursor-pointer lg:cursor-default"
+                                onClick={() => {
+                                    // Make it collapsible only on mobile/tablet
+                                    if (window.innerWidth < 1024) setShowHistory(!showHistory);
+                                }}
+                            >
+                                <CardTitle className="text-lg font-bold text-c-primary dark:text-white flex items-center justify-between">
+                                    <span className="flex items-center gap-2">
+                                        <History className="h-5 w-5 text-slate-400" />
+                                        Lacak Laporan
+                                    </span>
+                                    <ChevronDown className={`h-5 w-5 text-slate-400 lg:hidden transition-transform ${showHistory ? 'rotate-180' : ''}`} />
+                                </CardTitle>
+                                <p className="text-[13px] text-slate-500 font-medium mt-1">Cari berdasarkan Nama atau Judul.</p>
+                            </CardHeader>
+
+                            <div className={`p-6 ${!showHistory ? 'hidden lg:block' : 'block'}`}>
+                                <form onSubmit={handleTrackHistory} className="flex gap-2 mb-6">
+                                    <Input
+                                        placeholder="Ketik kata kunci..."
+                                        value={trackName}
+                                        onChange={e => setTrackName(e.target.value)}
+                                        required
+                                        className="bg-slate-50 dark:bg-[#0F172A] border-slate-200 dark:border-slate-800 focus-visible:ring-slate-400 rounded-xl"
+                                    />
+                                    <Button type="submit" disabled={loadingHistory} className="gap-2 shrink-0 rounded-xl bg-slate-800 text-white hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 font-bold">
+                                        {loadingHistory ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
+                                    </Button>
+                                </form>
+
+                                {historyLoaded && (
+                                    reports.length === 0 ? (
+                                        <div className="text-center py-10 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-[#0F172A]/50">
+                                            <Search className="h-10 w-10 mx-auto mb-3 text-slate-300 dark:text-slate-600" />
+                                            <p className="text-[13px] font-medium text-slate-500">
+                                                Tidak ada laporan yang cocok.
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                                            {reports.map((report, idx) => (
+                                                <div key={idx} className="p-4 rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-[#1E293B] shadow-sm space-y-3 relative group">
+                                                    <div className="absolute top-4 right-4">
+                                                        <span className={`text-[10px] font-extrabold uppercase px-2 py-1 rounded-md border ${STATUS_COLOR[report.status] || 'text-slate-500 border-slate-200'}`}>
+                                                            {STATUS_LABEL[report.status] || report.status}
+                                                        </span>
+                                                    </div>
+
+                                                    <div className="pr-20">
+                                                        <h4 className="font-bold text-c-primary dark:text-white text-sm line-clamp-1">{report.title}</h4>
+                                                        <p className="text-[12px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{report.content}</p>
+                                                    </div>
+
+                                                    {report.admin_response && (
+                                                        <div className="bg-slate-50 dark:bg-[#0F172A] border border-slate-100 dark:border-slate-800 rounded-xl p-3 text-sm mt-3 relative before:absolute before:left-3 before:-top-1.5 before:w-3 before:h-3 before:bg-slate-50 dark:before:bg-[#0F172A] before:border-t before:border-l before:border-slate-100 dark:before:border-slate-800 before:rotate-45">
+                                                            <div className="font-bold text-slate-700 dark:text-slate-300 text-[11px] mb-1 flex items-center gap-1.5">
+                                                                <ShieldAlert className="h-3 w-3" /> Balasan Admin:
+                                                            </div>
+                                                            <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">{report.admin_response}</p>
+                                                        </div>
+                                                    )}
+
+                                                    <div className="flex items-center gap-1.5 text-[10px] font-medium text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800/80">
+                                                        <Clock className="h-3 w-3" />
+                                                        {new Date(report.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            <div ref={chatEndRef} />
+                                        </div>
+                                    )
+                                )}
+                            </div>
+                        </Card>
+                    </div>
+                </div>
             </main>
+
+            {/* Footer */}
+            <footer className="border-t border-[#7AAACE]/20 dark:border-slate-800/80 bg-white dark:bg-[#0F172A] mt-auto">
+                <div className="container px-6 py-6 flex flex-col md:flex-row items-center justify-between mx-auto">
+                    <div className="flex items-center gap-2 mb-3 md:mb-0">
+                        <img src="/logo.png" alt="Logo" className="h-6 w-auto object-contain fallback-logo bg-c-tertiary p-0.5 rounded-full" />
+                        <span className="text-sm font-bold text-[#355872] dark:text-slate-300 tracking-tight">Jawara Portal</span>
+                    </div>
+                    <div className="text-sm font-medium text-slate-400">
+                        © {new Date().getFullYear()} JAWARA. Hak Cipta Dilindungi Undang-Undang.
+                    </div>
+                </div>
+            </footer>
+
+            {/* Styles for custom scrollbar hidden in normal classes */}
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                .custom-scrollbar::-webkit-scrollbar {
+                    width: 4px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background-color: #cbd5e1;
+                    border-radius: 20px;
+                }
+                .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background-color: #334155;
+                }
+            `}} />
         </div>
     );
 }

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ShoppingBag, Store, Plus, Search, MessageCircle, ArrowLeft, Sun, Moon, Info, Tag } from "lucide-react";
+import { ShoppingBag, Store, Plus, Search, MessageCircle, ArrowLeft, Sun, Moon, Info, Tag, LayoutGrid, ChevronDown } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
@@ -72,95 +72,56 @@ export default function LapakDesaPage({ isDark, toggleDark }) {
     );
 
     return (
-        <div className="flex flex-col min-h-screen">
-            <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                <div className="container flex h-16 items-center justify-between px-4 mx-auto">
-                    <div className="flex items-center gap-2">
-                        <Link to="/" className="p-2 hover:bg-muted rounded-full transition-colors">
-                            <ArrowLeft className="h-5 w-5" />
-                        </Link>
-                        <span className="text-xl font-bold tracking-tight text-primary flex items-center gap-2">
-                            <ShoppingBag className="h-6 w-6" /> Lapak Desa
-                        </span>
+        <div className="flex flex-col min-h-screen bg-c-bg dark:bg-[#0F172A] font-sans selection:bg-orange-500/30">
+            {/* Header */}
+            <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800/60 bg-white/80 dark:bg-[#0F172A]/80 backdrop-blur-md">
+                <div className="container flex h-[72px] items-center justify-between px-6 mx-auto">
+                    <div className="flex items-center gap-3">
+                        <img src="/logo.png" alt="Logo" className="h-10 w-auto object-contain fallback-logo bg-c-tertiary p-1 rounded-full" />
+                        <span className="text-xl font-extrabold tracking-tight text-c-primary dark:text-white">Jawara Portal</span>
                     </div>
+                    <nav className="hidden md:flex items-center gap-8">
+                        <Link to="/" className="text-sm font-semibold text-c-primary border-b-2 border-c-primary pb-1 pt-1">Beranda</Link>
+
+                        <div className="relative group pt-1">
+                            <button className="flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-c-primary dark:text-slate-400 dark:hover:text-white transition-colors pb-1">
+                                Layanan Digital <ChevronDown className="h-4 w-4" />
+                            </button>
+                            <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-[#1E293B] rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-2.5 overflow-hidden translate-y-2 group-hover:translate-y-0">
+                                <Link to="/layanan-surat" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-c-secondary dark:hover:text-blue-400 transition-colors">Administrasi Surat</Link>
+                                <Link to="/lapak-desa" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Lapak Desa</Link>
+                                <Link to="/pinjam-barang" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-fuchsia-600 dark:hover:text-fuchsia-400 transition-colors">Pinjam Barang</Link>
+                                <Link to="/posyandu" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-red-600 dark:hover:text-red-400 transition-colors">Info Posyandu</Link>
+                                <Link to="/barang-hilang" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">Barang Hilang</Link>
+                                <Link to="/social-aid" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Penerima Bantuan</Link>
+                                <Link to="/finance" className="block px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Transparansi Keuangan</Link>
+                                <div className="h-px w-full bg-slate-100 dark:bg-slate-800 my-1.5"></div>
+                                <Link to="/report" className="block px-5 py-2.5 text-sm font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors">Layanan Pengaduan</Link>
+                            </div>
+                        </div>
+                    </nav>
                     <div className="flex items-center gap-4">
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button size="sm" className="gap-2">
-                                    <Plus className="h-4 w-4" /> Daftar Usaha
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
-                                <DialogHeader>
-                                    <DialogTitle>Daftarkan Produk/Jasa UMKM</DialogTitle>
-                                    <DialogDescription>
-                                        Pasarkan produk Anda di platform desa. Data akan divalidasi oleh admin sebelum tayang.
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <form onSubmit={handleRegister} className="space-y-4 py-4">
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="nik">NIK Pemilik</Label>
-                                            <Input id="nik" name="nik" required placeholder="NIK sesuai KTP" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="nomor_wa">WhatsApp</Label>
-                                            <Input id="nomor_wa" name="nomor_wa" required placeholder="08xxx" />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="nama_toko">Nama Toko / Usaha</Label>
-                                        <Input id="nama_toko" name="nama_toko" required placeholder="Contoh: Warung Berkah" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="nama_produk">Nama Produk/Jasa</Label>
-                                        <Input id="nama_produk" name="nama_produk" required placeholder="Contoh: Keripik Singkong" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="harga">Harga (IDR)</Label>
-                                        <Input id="harga" name="harga" type="number" required placeholder="5000" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="deskripsi">Deskripsi</Label>
-                                        <Textarea id="deskripsi" name="deskripsi" required placeholder="Jelaskan keunggulan produk Anda" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="foto">Foto Produk</Label>
-                                        <Input id="foto" name="foto" type="file" accept="image/*" />
-                                    </div>
-                                    <Button type="submit" className="w-full" disabled={submitting}>
-                                        {submitting ? "Mengirim..." : "Kirim Pendaftaran"}
-                                    </Button>
-                                    {success && (
-                                        <div className="p-3 bg-green-100 text-green-700 rounded-lg text-sm text-center">
-                                            Pendaftaran berhasil! Tunggu konfirmasi admin.
-                                        </div>
-                                    )}
-                                    {error && (
-                                        <div className="p-3 bg-red-100 text-red-700 rounded-lg text-sm text-center">
-                                            {error}
-                                        </div>
-                                    )}
-                                </form>
-                            </DialogContent>
-                        </Dialog>
-                        <button onClick={toggleDark} className="p-2 rounded-full hover:bg-muted transition-colors">
-                            {isDark ? <Sun className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-slate-600" />}
+                        <button
+                            onClick={toggleDark}
+                            className="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                            aria-label="Toggle dark mode"
+                        >
+                            {isDark ? <Sun className="h-5 w-5 text-amber-400" /> : <Moon className="h-5 w-5 text-slate-600" />}
                         </button>
                     </div>
                 </div>
             </header>
 
             <main className="flex-1 container px-4 py-8 mx-auto">
-                <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-                    <div>
-                        <h2 className="text-2xl font-bold">Produk Unggulan Desa</h2>
-                        <p className="text-muted-foreground">Mendukung ekonomi lokal melalui pemasaran digital.</p>
+                <div className="mb-8 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+                    <div className="space-y-1">
+                        <h2 className="text-2xl font-extrabold tracking-tight text-c-primary dark:text-white">Produk Unggulan Desa</h2>
+                        <p className="text-slate-500 dark:text-slate-400 font-medium text-sm">Mendukung ekonomi lokal melalui pemasaran digital.</p>
                     </div>
-                    <div className="relative w-full md:w-72">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <div className="relative w-full md:w-80">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                         <Input
-                            className="pl-9"
+                            className="pl-10 h-11 bg-white dark:bg-[#1E293B] border-slate-200 dark:border-slate-800 focus-visible:ring-orange-500 rounded-xl shadow-sm"
                             placeholder="Cari produk atau toko..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
@@ -171,11 +132,12 @@ export default function LapakDesaPage({ isDark, toggleDark }) {
                 {loading ? (
                     <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
                         {[1, 2, 3, 4].map(i => (
-                            <Card key={i} className="animate-pulse">
-                                <div className="aspect-square bg-muted" />
-                                <CardHeader className="space-y-2">
-                                    <div className="h-4 bg-muted rounded w-3/4" />
-                                    <div className="h-3 bg-muted rounded w-1/2" />
+                            <Card key={i} className="animate-pulse border-none shadow-sm bg-white dark:bg-[#1E293B] rounded-2xl overflow-hidden">
+                                <div className="aspect-square bg-slate-100 dark:bg-slate-800/50" />
+                                <CardHeader className="space-y-3 p-5">
+                                    <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded w-3/4" />
+                                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2" />
+                                    <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-1/3 mt-2" />
                                 </CardHeader>
                             </Card>
                         ))}
@@ -183,43 +145,43 @@ export default function LapakDesaPage({ isDark, toggleDark }) {
                 ) : filteredProducts.length > 0 ? (
                     <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
                         {filteredProducts.map((product) => (
-                            <Card key={product.id} className="overflow-hidden group hover:shadow-lg transition-all duration-300 border-muted">
-                                <div className="aspect-square relative overflow-hidden bg-muted">
+                            <Card key={product.id} className="overflow-hidden group hover:shadow-xl transition-all duration-300 border-none bg-white dark:bg-[#1E293B] rounded-[1.5rem]">
+                                <div className="aspect-square relative overflow-hidden bg-slate-100 dark:bg-slate-800">
                                     {product.foto_produk ? (
                                         <img
                                             src={`/storage/${product.foto_produk}`}
                                             alt={product.nama_produk}
-                                            className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
+                                            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                                         />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center">
-                                            <ShoppingBag className="h-12 w-12 text-muted-foreground/30" />
+                                            <ShoppingBag className="h-12 w-12 text-slate-300 dark:text-slate-600" />
                                         </div>
                                     )}
-                                    <div className="absolute top-2 right-2">
-                                        <span className="bg-primary text-primary-foreground text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">
+                                    <div className="absolute top-3 right-3 shadow-md">
+                                        <span className="bg-orange-500 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
                                             UMKM
                                         </span>
                                     </div>
                                 </div>
-                                <CardHeader className="p-4 space-y-1">
-                                    <div className="flex items-center gap-1 text-[10px] font-medium text-primary uppercase tracking-tighter">
-                                        <Store className="h-3 w-3" /> {product.nama_toko}
+                                <CardHeader className="p-5 pb-3 space-y-1.5">
+                                    <div className="flex items-center gap-1.5 text-[11px] font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider">
+                                        <Store className="h-3.5 w-3.5" /> {product.nama_toko}
                                     </div>
-                                    <CardTitle className="text-lg line-clamp-1">{product.nama_produk}</CardTitle>
-                                    <div className="text-xl font-bold text-primary">
+                                    <CardTitle className="text-[17px] font-bold text-c-primary dark:text-white line-clamp-1">{product.nama_produk}</CardTitle>
+                                    <div className="text-xl font-black text-c-primary dark:text-white pt-1">
                                         {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(product.harga)}
                                     </div>
                                 </CardHeader>
-                                <CardContent className="px-4 pb-4 pt-0">
-                                    <p className="text-xs text-muted-foreground line-clamp-2 h-8">
+                                <CardContent className="px-5 pb-4 pt-0">
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 h-8 font-medium leading-relaxed">
                                         {product.deskripsi}
                                     </p>
                                 </CardContent>
-                                <CardFooter className="p-4 pt-0 border-t bg-muted/5 group-hover:bg-primary/5 transition-colors">
+                                <CardFooter className="p-5 pt-0 mt-2">
                                     <Button
                                         variant="outline"
-                                        className="w-full gap-2 border-primary/20 hover:bg-primary hover:text-white"
+                                        className="w-full gap-2 h-11 rounded-xl font-bold border-slate-200 dark:border-slate-700 hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-all text-slate-700 dark:text-slate-300"
                                         onClick={() => window.open(`https://wa.me/62${product.nomor_wa.replace(/^0/, '')}?text=Halo, saya tertarik dengan produk ${product.nama_produk} di Lapak Desa.`, '_blank')}
                                     >
                                         <MessageCircle className="h-4 w-4" /> Hubungi Penjual
@@ -229,14 +191,26 @@ export default function LapakDesaPage({ isDark, toggleDark }) {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-20 border-2 border-dashed rounded-xl bg-muted/10">
-                        <ShoppingBag className="h-16 w-16 mx-auto mb-4 text-muted-foreground/30" />
-                        <h3 className="text-xl font-semibold">Belum ada produk</h3>
-                        <p className="text-muted-foreground">Produk UMKM akan tampil di sini setelah divalidasi admin.</p>
-                        <Button variant="link" className="mt-2">Pelajari cara mendaftar</Button>
+                    <div className="text-center py-20 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-3xl bg-white/50 dark:bg-[#1E293B]/50">
+                        <ShoppingBag className="h-16 w-16 mx-auto mb-4 text-slate-300 dark:text-slate-600" />
+                        <h3 className="text-xl font-bold text-c-primary dark:text-white">Belum ada produk</h3>
+                        <p className="text-slate-500 dark:text-slate-400 mt-2">Produk UMKM akan tampil di sini setelah divalidasi admin.</p>
                     </div>
                 )}
             </main>
+
+            {/* Footer */}
+            <footer className="border-t border-[#7AAACE]/20 dark:border-slate-800/80 bg-white dark:bg-[#0F172A] mt-auto">
+                <div className="container px-6 py-6 flex flex-col md:flex-row items-center justify-between mx-auto">
+                    <div className="flex items-center gap-2 mb-3 md:mb-0">
+                        <img src="/logo.png" alt="Logo" className="h-6 w-auto object-contain fallback-logo bg-c-tertiary p-0.5 rounded-full" />
+                        <span className="text-sm font-bold text-[#355872] dark:text-slate-300 tracking-tight">Jawara Portal</span>
+                    </div>
+                    <div className="text-sm font-medium text-slate-400">
+                        © {new Date().getFullYear()} JAWARA. Hak Cipta Dilindungi Undang-Undang.
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 }
