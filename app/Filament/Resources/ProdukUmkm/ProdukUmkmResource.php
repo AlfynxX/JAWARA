@@ -39,7 +39,15 @@ class ProdukUmkmResource extends Resource
             TextInput::make('nama_produk')->label('Nama Produk/Jasa')->required(),
             TextInput::make('harga')->label('Harga')->numeric()->prefix('IDR')->required(),
             Textarea::make('deskripsi')->label('Deskripsi Produk')->required(),
-            FileUpload::make('foto_produk')->label('Foto Produk')->directory('umkm/produk')->image(),
+            FileUpload::make('foto_produk')
+                ->label('Foto Produk')
+                ->directory('umkm/produk')
+                ->image()
+                ->imageEditor()
+                ->optimize('webp')
+                ->resize(1920)
+                ->maxSize(5120)
+                ->helperText('Otomatis di-resize dan dikompres (webp). Maks 5MB asli.'),
             Toggle::make('is_active')->label('Tayangkan di Web (Validasi Admin)')->default(false),
         ]);
     }

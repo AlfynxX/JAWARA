@@ -40,8 +40,17 @@ class LaporanKehilanganResource extends Resource
             TextInput::make('nama_barang')->label('Nama Barang')->required(),
             TextInput::make('lokasi_kejadian')->label('Lokasi Terakhir / Ditemukan')->required(),
             Textarea::make('deskripsi_ciri_ciri')->label('Ciri-ciri / Keterangan')->required(),
-            FileUpload::make('foto_barang')->label('Foto Barang')->directory('kehilangan')->image(),
+            FileUpload::make('foto_barang')
+                ->label('Foto Barang')
+                ->directory('kehilangan')
+                ->image()
+                ->imageEditor()
+                ->optimize('webp')
+                ->resize(1920)
+                ->maxSize(5120)
+                ->helperText('Otomatis di-resize dan dikompres (webp). Maks 5MB asli.'),
             Toggle::make('is_verified')->label('Verifikasi Laporan (Tampilkan di Web)')->default(false),
+
             Select::make('status')->options(['aktif' => 'Aktif (Masih Dicari/Ditemukan)', 'selesai' => 'Selesai (Sudah Kembali)', 'diarsipkan' => 'Diarsipkan (Kadaluwarsa)'])->default('aktif')->required(),
         ]);
     }

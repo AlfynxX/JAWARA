@@ -32,7 +32,15 @@ class InventarisResource extends Resource
             TextInput::make('kode_barang')->label('Kode/Label Barang')->unique(ignoreRecord: true),
             TextInput::make('jumlah_total')->label('Jumlah Total Unit')->numeric()->required(),
             TextInput::make('jumlah_tersedia')->label('Jumlah Tersedia (Saat Ini)')->numeric()->required(),
-            FileUpload::make('foto_barang')->label('Foto Barang')->directory('inventaris')->image(),
+            FileUpload::make('foto_barang')
+                ->label('Foto Barang')
+                ->directory('inventaris')
+                ->image()
+                ->imageEditor()
+                ->optimize('webp')
+                ->resize(1920)
+                ->maxSize(5120)
+                ->helperText('Otomatis di-resize dan dikompres (webp). Maks 5MB asli.'),
         ]);
     }
 

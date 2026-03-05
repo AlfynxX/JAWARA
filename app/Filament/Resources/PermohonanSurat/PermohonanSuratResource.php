@@ -35,7 +35,16 @@ class PermohonanSuratResource extends Resource
             TextInput::make('nomor_wa')->label('Nomor WhatsApp')->required()->tel(),
             TextInput::make('jenis_surat')->label('Jenis Surat')->required()->placeholder('Contoh: SKTM, Surat Domisili'),
             Textarea::make('keperluan')->label('Keperluan/Tujuan')->required(),
-            FileUpload::make('dokumen_persyaratan')->label('Dokumen Persyaratan (KTP/KK)')->multiple()->directory('permohonan-surat/syarat')->image(),
+            FileUpload::make('dokumen_persyaratan')
+                ->label('Dokumen Persyaratan (KTP/KK)')
+                ->multiple()
+                ->directory('permohonan-surat/syarat')
+                ->image()
+                ->imageEditor()
+                ->optimize('webp')
+                ->resize(1920)
+                ->maxSize(5120)
+                ->helperText('Di-resize otomatis jadi webp. Maks 5MB/file.'),
             Select::make('status')->options(['menunggu' => 'Menunggu', 'diproses' => 'Diproses', 'selesai' => 'Selesai', 'ditolak' => 'Ditolak'])->default('menunggu')->required(),
             FileUpload::make('file_hasil')->label('Upload Surat Jadi (PDF)')->directory('permohonan-surat/hasil')->acceptedFileTypes(['application/pdf']),
         ]);

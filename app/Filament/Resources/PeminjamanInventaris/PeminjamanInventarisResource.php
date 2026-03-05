@@ -34,7 +34,16 @@ class PeminjamanInventarisResource extends Resource
             Select::make('inventaris_id')->relationship('inventaris', 'nama_barang')->label('Barang yang Dipinjam')->required()->searchable()->preload(),
             Select::make('citizen_id')->relationship('citizen', 'name')->label('Warga Terdaftar')->searchable()->preload(),
             TextInput::make('nama_peminjam')->label('Nama Peminjam (Jika manual)')->required(),
-            FileUpload::make('identitas_peminjam')->label('Foto KTP Peminjam')->directory('peminjaman/identitas')->image()->required(),
+            FileUpload::make('identitas_peminjam')
+                ->label('Foto KTP Peminjam')
+                ->directory('peminjaman/identitas')
+                ->image()
+                ->imageEditor()
+                ->optimize('webp')
+                ->resize(1920)
+                ->maxSize(5120)
+                ->required()
+                ->helperText('Otomatis di-resize dan dikompres (webp). Maks 5MB asli.'),
             TextInput::make('jumlah')->label('Jumlah Pinjam')->numeric()->required()->minValue(1),
             DatePicker::make('tanggal_pinjam')->label('Tanggal Mulai Pinjam')->required()->default(now()),
             DatePicker::make('tanggal_kembali')->label('Tanggal Rencana Kembali')->required(),

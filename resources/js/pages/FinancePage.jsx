@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, TrendingUp, TrendingDown, Loader2, Wallet, Moon, Sun, LayoutGrid, ChevronDown } from "lucide-react";
+import { ArrowLeft, TrendingUp, TrendingDown, Loader2, Wallet, Moon, Sun, LayoutGrid, ChevronDown, Menu, X } from "lucide-react";
 import { Link } from 'react-router-dom';
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
@@ -10,6 +10,7 @@ import {
 const formatRp = (val) => 'Rp ' + Number(val).toLocaleString('id-ID');
 
 export default function FinancePage({ isDark, toggleDark }) {
+    const [mobileOpen, setMobileOpen] = useState(false);
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('all');
@@ -29,14 +30,16 @@ export default function FinancePage({ isDark, toggleDark }) {
         <div className="flex flex-col min-h-screen bg-c-bg dark:bg-[#0F172A] font-sans selection:bg-emerald-500/30">
             {/* Header */}
             <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800/60 bg-white/80 dark:bg-[#0F172A]/80 backdrop-blur-md">
-                <div className="container flex h-[72px] items-center justify-between px-6 mx-auto">
-                    <div className="flex items-center gap-3">
+                <div className="container flex h-[72px] items-center px-4 md:px-6 mx-auto relative">
+                    <button className="md:hidden p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors mr-2" onClick={() => setMobileOpen(o => !o)} aria-label="Toggle menu">
+                        <Menu className="h-5 w-5 text-slate-600 dark:text-slate-300" />
+                    </button>
+                    <div className="flex items-center gap-3 absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:left-auto">
                         <img src="/logo.png" alt="Logo" className="h-10 w-auto object-contain fallback-logo bg-c-tertiary p-1 rounded-full" />
                         <span className="text-xl font-extrabold tracking-tight text-c-primary dark:text-white">Jawara Portal</span>
                     </div>
-                    <nav className="hidden md:flex items-center gap-8">
+                    <nav className="hidden md:flex items-center gap-8 ml-10">
                         <Link to="/" className="text-sm font-semibold text-c-primary border-b-2 border-c-primary pb-1 pt-1">Beranda</Link>
-
                         <div className="relative group pt-1">
                             <button className="flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-c-primary dark:text-slate-400 dark:hover:text-white transition-colors pb-1">
                                 Layanan Digital <ChevronDown className="h-4 w-4" />
@@ -54,17 +57,48 @@ export default function FinancePage({ isDark, toggleDark }) {
                             </div>
                         </div>
                     </nav>
-                    <div className="flex items-center gap-4">
-                        <button
-                            onClick={toggleDark}
-                            className="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                            aria-label="Toggle dark mode"
-                        >
+                    <div className="hidden md:flex items-center ml-auto">
+                        <button onClick={toggleDark} className="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Toggle dark mode">
                             {isDark ? <Sun className="h-5 w-5 text-amber-400" /> : <Moon className="h-5 w-5 text-slate-600" />}
                         </button>
                     </div>
                 </div>
             </header>
+            {mobileOpen && (
+                <>
+                    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[60] md:hidden" onClick={() => setMobileOpen(false)} />
+                    <div className="fixed top-0 left-0 h-full w-[60%] max-w-[280px] bg-white dark:bg-[#0F172A] z-[70] shadow-2xl flex flex-col md:hidden">
+                        <div className="flex items-center justify-between px-5 h-[72px] border-b border-slate-100 dark:border-slate-800">
+                            <div className="flex items-center gap-2">
+                                <img src="/logo.png" alt="Logo" className="h-8 w-auto object-contain bg-c-tertiary p-1 rounded-full" />
+                                <span className="font-extrabold text-c-primary dark:text-white text-sm">Jawara Portal</span>
+                            </div>
+                            <button onClick={() => setMobileOpen(false)} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                                <X className="h-5 w-5 text-slate-500 dark:text-slate-400" />
+                            </button>
+                        </div>
+                        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-1">
+                            <Link to="/" onClick={() => setMobileOpen(false)} className="block px-4 py-3 rounded-xl text-sm font-semibold text-c-primary dark:text-white bg-c-bg dark:bg-slate-800">Beranda</Link>
+                            <p className="px-4 pt-3 pb-1 text-[10px] font-extrabold uppercase tracking-widest text-slate-400">Layanan Digital</p>
+                            <Link to="/layanan-surat" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">Administrasi Surat</Link>
+                            <Link to="/lapak-desa" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">Lapak Desa</Link>
+                            <Link to="/pinjam-barang" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">Pinjam Barang</Link>
+                            <Link to="/posyandu" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">Info Posyandu</Link>
+                            <Link to="/barang-hilang" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">Barang Hilang</Link>
+                            <Link to="/social-aid" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">Penerima Bantuan</Link>
+                            <Link to="/finance" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">Transparansi Keuangan</Link>
+                            <div className="h-px bg-slate-100 dark:bg-slate-800 my-1"></div>
+                            <Link to="/report" onClick={() => setMobileOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10">Layanan Pengaduan</Link>
+                        </div>
+                        <div className="border-t border-slate-100 dark:border-slate-800 px-5 py-4">
+                            <button onClick={toggleDark} className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                                {isDark ? <Sun className="h-5 w-5 text-amber-400" /> : <Moon className="h-5 w-5 text-slate-500" />}
+                                {isDark ? 'Mode Terang' : 'Mode Gelap'}
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )}
 
             <main className="flex-1 container px-4 py-8 mx-auto max-w-5xl space-y-8">
                 <div className="space-y-2 text-center md:text-left mb-6">

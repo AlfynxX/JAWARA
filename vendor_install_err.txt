@@ -1,0 +1,115 @@
+﻿composer : 
+./composer.json has 
+been updated
+At line:1 char:1
++ composer require 
+intervention/image 
+2>&1 | Out-File 
+-FilePath vendor_ ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (./composer.js   
+ on has been update    
+d:String) [], Remo    
+teException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+Running composer 
+update 
+intervention/image
+Loading composer 
+repositories with 
+package information
+Updating dependencies
+Your requirements 
+could not be resolved 
+to an installable set 
+of packages.
+
+  Problem 1
+    - 
+filament/filament is 
+locked to version 
+v5.0.0 and an update 
+of this package was 
+not requested.
+    - filament/actions 
+v5.0.0 requires 
+openspout/openspout 
+^4.23 -> satisfiable 
+by openspout/openspout[
+v4.28.5].
+    - 
+filament/filament 
+v5.0.0 requires 
+filament/actions 
+v5.0.0 -> satisfiable 
+by filament/actions[v5.
+0.0].
+    - 
+openspout/openspout 
+v4.28.5 requires 
+ext-zip * -> it is 
+missing from your 
+system. Install or 
+enable PHP's zip 
+extension.
+
+      Alternatively 
+you can require one of 
+these packages that 
+provide the extension 
+(or parts of it):
+      Keep in mind 
+that the suggestions 
+are automated and may 
+not be valid or safe 
+to use
+      - pecl/zip A zip 
+management extension
+      - 
+badpixxel/paddock Just 
+The Paddock Project
+
+
+To enable extensions, 
+verify that they are 
+enabled in your .ini 
+files:
+    - 
+C:\xampp\php\php.ini
+You can also run `php 
+--ini` in a terminal 
+to see which files are 
+used by PHP in CLI 
+mode.
+Alternatively, you can 
+run Composer with `--ig
+nore-platform-req=ext-z
+ip` to temporarily 
+ignore these required 
+extensions.
+You can also try 
+re-running composer 
+require with an 
+explicit version 
+constraint, e.g. 
+"composer require 
+intervention/image:*" 
+to figure out if any 
+version is 
+installable, or 
+"composer require inter
+vention/image:^2.1" if 
+you know which you 
+need.
+
+Installation failed, 
+reverting 
+./composer.json and 
+./composer.lock to 
+their original content.
