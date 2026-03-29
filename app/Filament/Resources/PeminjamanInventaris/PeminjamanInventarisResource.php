@@ -39,11 +39,9 @@ class PeminjamanInventarisResource extends Resource
                 ->directory('peminjaman/identitas')
                 ->image()
                 ->imageEditor()
-                ->optimize('webp')
-                ->resize(1920)
                 ->maxSize(5120)
                 ->required()
-                ->helperText('Otomatis di-resize dan dikompres (webp). Maks 5MB asli.'),
+                ->helperText('Maks 5MB asli.'),
             TextInput::make('jumlah')->label('Jumlah Pinjam')->numeric()->required()->minValue(1),
             DatePicker::make('tanggal_pinjam')->label('Tanggal Mulai Pinjam')->required()->default(now()),
             DatePicker::make('tanggal_kembali')->label('Tanggal Rencana Kembali')->required(),

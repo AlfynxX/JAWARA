@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import imageCompression from 'browser-image-compression';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,12 +51,32 @@ export default function PinjamBarangPage({ isDark, toggleDark }) {
     };
 
     // Submit dari dialog per-card
-    const handleBooking = (e) => {
+    const handleBooking = async (e) => {
         e.preventDefault();
         setSubmitting(true);
         setError(null);
         setSuccess(false);
-        const fd = new FormData(e.target);
+        const form = e.target;
+        const fd = new FormData(form);
+
+        const fileInput = form.querySelector('input[type="file"]');
+        if (fileInput && fileInput.files.length > 0) {
+            fd.delete('identitas[]');
+            for (let i = 0; i < fileInput.files.length; i++) {
+                const file = fileInput.files[i];
+                if (file.type.startsWith('image/')) {
+                    try {
+                        const compressedFile = await imageCompression(file, { maxSizeMB: 0.1, maxWidthOrHeight: 800, useWebWorker: true });
+                        fd.append('identitas[]', compressedFile, file.name);
+                    } catch (err) {
+                        fd.append('identitas[]', file);
+                    }
+                } else {
+                    fd.append('identitas[]', file);
+                }
+            }
+        }
+
         fetch('/api/inventaris/booking', {
             method: 'POST',
             headers: { 'Accept': 'application/json' },
@@ -80,7 +101,7 @@ export default function PinjamBarangPage({ isDark, toggleDark }) {
     };
 
     // Submit dari form standalone
-    const handleStandaloneSubmit = (e) => {
+    const handleStandaloneSubmit = async (e) => {
         e.preventDefault();
         setFormSubmitting(true);
         setFormError(null);
@@ -111,9 +132,19 @@ export default function PinjamBarangPage({ isDark, toggleDark }) {
         }
 
         if (formFiles) {
-            Array.from(formFiles).forEach(file => {
-                fd.append('identitas[]', file);
-            });
+            for (let i = 0; i < formFiles.length; i++) {
+                const file = formFiles[i];
+                if (file.type.startsWith('image/')) {
+                    try {
+                        const compressedFile = await imageCompression(file, { maxSizeMB: 0.1, maxWidthOrHeight: 800, useWebWorker: true });
+                        fd.append('identitas[]', compressedFile, file.name);
+                    } catch (err) {
+                        fd.append('identitas[]', file);
+                    }
+                } else {
+                    fd.append('identitas[]', file);
+                }
+            }
         }
 
         fetch('/api/inventaris/booking', {

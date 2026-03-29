@@ -1,4 +1,5 @@
 ﻿import React, { useState } from 'react';
+import imageCompression from 'browser-image-compression';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,12 +32,31 @@ export default function LayananSuratPage({ isDark, toggleDark }) {
             });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitting(true);
         setError(null);
         setSuccess(false);
-        const formData = new FormData(e.target);
+        const form = e.target;
+        const formData = new FormData(form);
+
+        const fileInput = form.querySelector('input[type="file"]');
+        if (fileInput && fileInput.files.length > 0) {
+            formData.delete('dokumen[]');
+            for (let i = 0; i < fileInput.files.length; i++) {
+                const file = fileInput.files[i];
+                if (file.type.startsWith('image/')) {
+                    try {
+                        const compressedFile = await imageCompression(file, { maxSizeMB: 0.1, maxWidthOrHeight: 800, useWebWorker: true });
+                        formData.append('dokumen[]', compressedFile, file.name);
+                    } catch (err) {
+                        formData.append('dokumen[]', file);
+                    }
+                } else {
+                    formData.append('dokumen[]', file);
+                }
+            }
+        }
 
         fetch('/api/permohonan-surat', {
             method: 'POST',

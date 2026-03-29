@@ -45,10 +45,8 @@ class LaporanKehilanganResource extends Resource
                 ->directory('kehilangan')
                 ->image()
                 ->imageEditor()
-                ->optimize('webp')
-                ->resize(1920)
                 ->maxSize(5120)
-                ->helperText('Otomatis di-resize dan dikompres (webp). Maks 5MB asli.'),
+                ->helperText('Maks 5MB asli.'),
             Toggle::make('is_verified')->label('Verifikasi Laporan (Tampilkan di Web)')->default(false),
 
             Select::make('status')->options(['aktif' => 'Aktif (Masih Dicari/Ditemukan)', 'selesai' => 'Selesai (Sudah Kembali)', 'diarsipkan' => 'Diarsipkan (Kadaluwarsa)'])->default('aktif')->required(),

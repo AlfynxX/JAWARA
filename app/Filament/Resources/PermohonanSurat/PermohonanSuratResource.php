@@ -41,10 +41,8 @@ class PermohonanSuratResource extends Resource
                 ->directory('permohonan-surat/syarat')
                 ->image()
                 ->imageEditor()
-                ->optimize('webp')
-                ->resize(1920)
                 ->maxSize(5120)
-                ->helperText('Di-resize otomatis jadi webp. Maks 5MB/file.'),
+                ->helperText('Maks 5MB/file.'),
             Select::make('status')->options(['menunggu' => 'Menunggu', 'diproses' => 'Diproses', 'selesai' => 'Selesai', 'ditolak' => 'Ditolak'])->default('menunggu')->required(),
             FileUpload::make('file_hasil')->label('Upload Surat Jadi (PDF)')->directory('permohonan-surat/hasil')->acceptedFileTypes(['application/pdf']),
         ]);

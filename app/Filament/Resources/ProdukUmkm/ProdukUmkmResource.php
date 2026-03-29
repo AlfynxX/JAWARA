@@ -44,10 +44,8 @@ class ProdukUmkmResource extends Resource
                 ->directory('umkm/produk')
                 ->image()
                 ->imageEditor()
-                ->optimize('webp')
-                ->resize(1920)
                 ->maxSize(5120)
-                ->helperText('Otomatis di-resize dan dikompres (webp). Maks 5MB asli.'),
+                ->helperText('Maks 5MB asli.'),
             Toggle::make('is_active')->label('Tayangkan di Web (Validasi Admin)')->default(false),
         ]);
     }

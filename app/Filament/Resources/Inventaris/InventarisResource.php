@@ -37,10 +37,8 @@ class InventarisResource extends Resource
                 ->directory('inventaris')
                 ->image()
                 ->imageEditor()
-                ->optimize('webp')
-                ->resize(1920)
                 ->maxSize(5120)
-                ->helperText('Otomatis di-resize dan dikompres (webp). Maks 5MB asli.'),
+                ->helperText('Maks 5MB asli.'),
         ]);
     }
 

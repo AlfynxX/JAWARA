@@ -57,13 +57,11 @@ class VillageGalleryResource extends Resource
                 ->label('Foto Kegiatan')
                 ->image()
                 ->imageEditor()
-                ->optimize('webp')
-                ->resize(1920)
                 ->directory('gallery')
                 ->disk('public')
                 ->maxSize(5120)
                 ->required()
-                ->helperText('Otomatis di-resize dan dikompres (webp). Maks 5MB asli.')
+                ->helperText('Maks 5MB asli.')
                 ->columnSpanFull(),
 
             TextInput::make('sort_order')

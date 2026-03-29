@@ -1,4 +1,5 @@
 ﻿import React, { useState, useRef, useEffect } from 'react';
+import imageCompression from 'browser-image-compression';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,19 +53,20 @@ export default function ReportPage({ isDark, toggleDark }) {
         }
     }, [reports, showHistory]);
 
-    const handleImageChange = (e) => {
+    const handleImageChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            if (file.size > 2 * 1024 * 1024) {
-                setErrorMsg("Ukuran gambar terlalu besar (Maks 2MB)");
-                return;
+            try {
+                const options = { maxSizeMB: 0.1, maxWidthOrHeight: 800, useWebWorker: true };
+                const compressedFile = await imageCompression(file, options);
+                setImage(compressedFile);
+                const reader = new FileReader();
+                reader.onloadend = () => setImagePreview(reader.result);
+                reader.readAsDataURL(compressedFile);
+            } catch (error) {
+                console.error(error);
+                setErrorMsg("Gagal mengompres gambar.");
             }
-            setImage(file);
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result);
-            };
-            reader.readAsDataURL(file);
         }
     };
 
